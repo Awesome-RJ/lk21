@@ -84,10 +84,8 @@ class KDramaindo(BaseExtractor):
         soup = self.soup(raw)
 
         result = []
-        for info in soup.findAll(class_="info-post"):
-            if (a := info.a):
-                result.append({
+        result.extend({
                     "id": self.getPath(a["href"]),
                     "title": a.text
-                })
+                } for info in soup.findAll(class_="info-post") if (a := info.a))
         return result

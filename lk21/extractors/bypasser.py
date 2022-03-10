@@ -82,7 +82,7 @@ class Bypass(BaseExtractor):
         raw = self.session.get(url)
 
         if (videolink := re.findall(r"document.*((?=id\=)[^\"']+)", raw.text)):
-            nexturl = "https://streamtape.com/get_video?" + videolink[-1]
+            nexturl = f"https://streamtape.com/get_video?{videolink[-1]}"
             self.report_bypass(nexturl)
             if (redirect := self.bypass_redirect(nexturl)):
                 return redirect
@@ -210,7 +210,7 @@ class Bypass(BaseExtractor):
                     a = math.ceil(int(a) // 3)
                 else:
                     a = math.floor(int(a) // 3)
-                divider = int(re.findall(f"(\d+)%b", sc)[0])
+                divider = int(re.findall("(\\d+)%b", sc)[0])
                 return re.search(r"(^https://www\d+.zippyshare.com)", raw.url).group(1) + \
                     "".join([
                         file[0],
@@ -230,8 +230,7 @@ class Bypass(BaseExtractor):
         api = re.search(r"(/api/source/[^\"']+)", raw.text)
         if api is not None:
             result = {}
-            raw = self.session.post(
-                "https://layarkacaxxi.icu" + api.group(1)).json()
+            raw = self.session.post(f"https://layarkacaxxi.icu{api.group(1)}").json()
             for d in raw["data"]:
                 f = d["file"]
                 direct = self.bypass_redirect(f)

@@ -18,7 +18,7 @@ import os
 
 colorama.init()
 
-logging.basicConfig(format=f"\x1b[K%(message)s", level=logging.INFO)
+logging.basicConfig(format="\\x1b[K%(message)s", level=logging.INFO)
 logging.getLogger("requests").setLevel(logging.WARNING)
 
 extractors = {

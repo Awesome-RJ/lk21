@@ -80,10 +80,7 @@ class Dramaindo(BaseExtractor):
                                params={"s": query})
         soup = self.soup(raw)
 
-        result = []
-        for article in soup.findAll("article"):
-            result.append({
+        return [{
                 "title": article.find(itemprop="headline").text,
                 "id": self.getPath(article.a["href"])
-            })
-        return result
+            } for article in soup.findAll("article")]

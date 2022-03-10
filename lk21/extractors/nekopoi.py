@@ -31,9 +31,8 @@ class Nekopoi(BaseExtractor):
         raw = self.session.get(f"{self.host}/{id}")
         soup = self.soup(raw)
 
-        result = {}
         self._write(soup)
-        return result
+        return {}
 
     def search(self, query: str, page: int = 1) -> list:
         """
@@ -49,10 +48,8 @@ class Nekopoi(BaseExtractor):
 
         result = []
         if (res := soup.find(class_="result")):
-            for li in res.findAll("li"):
-                if (a := li.a):
-                    result.append({
+            result.extend({
                         "title": a.text,
                         "id": self.getPath(a["href"])
-                    })
+                    } for li in res.findAll("li") if (a := li.a))
         return result

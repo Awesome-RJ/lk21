@@ -38,7 +38,7 @@ def _check_version():
 
 class MetaSet(UserDict):
     def __init__(self, *args, **kwargs):
-        self.store = dict()
+        self.store = {}
         self.update(dict(*args, **kwargs))  # use the free update to set keys
 
         self._pattern = r"(?i){id} *: *(.+?)\n"
@@ -84,8 +84,7 @@ class MetaSet(UserDict):
         if (pre := self.store.get(key)):
             if not isinstance(pre, list):
                 self.store[key] = [pre]
-            self.store[key].extend(
-                [value] if not isinstance(value, list) else value)
+            self.store[key].extend(value if isinstance(value, list) else [value])
         else:
             self.store[key] = value
 
@@ -98,10 +97,7 @@ class MetaSet(UserDict):
             self.add(key or id, value.group(1), split)
 
     def pop(self, key, default=None, force=False):
-        if not self.store.get(key):
-            return default
-        else:
-            return self.store.pop(key) or default
+        return self.store.pop(key) or default if self.store.get(key) else default
 
 
 def parse_range(raw):
